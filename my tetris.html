@@ -1,7 +1,73 @@
 <!DOCTYPE html>
 <html>
-<body>
-    Tetris
-	<canvas id="gameGrid" height="800px" width="400px" style="background-color:#444444"></canvas>
+<title>
+Tetris
+</title>
+<script>
+
+var ctx;
+
+function initialize(){
+
+	c = document.getElementById("gameGrid");
+	ctx = c.getContext("2d");
+	drawBlock(0,0,200);
+	drawBlock(9,0,200);
+	drawBlock(0,19,200);
+	drawBlock(9,19,200);
+	
+}
+function drawBlock(x, y, c){ 
+	xPixel = x * 30;
+	yPixel = (19 - y) * 30;
+	
+//	Fill middle of block
+	ctx.fillStyle = "hsl(360,100%,100%)"; //Center of block same as background
+	ctx.fillRect(xPixel + 3, yPixel + 3, 24,24);
+
+//	ctx.fillStyle = "hsl(" + c + ",100%,50%)";
+
+/***Draw block borders***/
+	ctx.fillStyle = "#0066FF" // Solid border color
+//	Draw left trapezoid
+
+	ctx.beginPath();
+	ctx.moveTo(xPixel, yPixel);
+	ctx.lineTo(xPixel, yPixel+30);
+	ctx.lineTo(xPixel+3, yPixel+27);
+	ctx.lineTo(xPixel+3, yPixel+3);
+	ctx.fill();
+
+// Draw right trapezoid
+	ctx.beginPath();
+	ctx.moveTo(xPixel +30, yPixel);
+	ctx.lineTo(xPixel +30, yPixel+30);
+	ctx.lineTo(xPixel+27, yPixel+27);
+	ctx.lineTo(xPixel+27, yPixel+3);
+	ctx.fill();
+
+// Draw bottom trapezoid
+	ctx.beginPath();
+	ctx.moveTo(xPixel, yPixel +30);
+	ctx.lineTo(xPixel +30, yPixel+30);
+	ctx.lineTo(xPixel+27, yPixel+27);
+	ctx.lineTo(xPixel+3, yPixel+27);
+	ctx.fill();
+
+// Draw bottom top trapezoid
+	ctx.beginPath();
+	ctx.moveTo(xPixel, yPixel);
+	ctx.lineTo(xPixel +30, yPixel);
+	ctx.lineTo(xPixel+27, yPixel+3);
+	ctx.lineTo(xPixel+3, yPixel+3);
+	ctx.fill();
+	
+}
+functionDrawTetromino(x, y, t, o){
+	
+}
+</script>
+<body onload="initialize();" style="background-color:#444444">
+	<canvas id="gameGrid" height="600px" width="300px" style="background-color:#FFFFFF"></canvas>
 </body>
 </html>
