@@ -6,18 +6,37 @@ Tetris
 <script>
 
 var ctx;
+var t; //type
+var x,y; // position
+var o; //orientation
 
 function initialize(){
-
+	
+	t = 3;
+	x = 4;
+	y = 18;
+	o = 0;
+		
 	c = document.getElementById("gameGrid");
 	ctx = c.getContext("2d");
-	drawBlock(0,0,200);
-	drawBlock(9,0,200);
-	drawBlock(0,19,200);
-	drawBlock(9,19,200);
+	//drawBlock(0,0,200); //lower left
+	//drawBlock(9,0,200); // lower right
+	//drawBlock(0,19,200); // upper left
+	//drawBlock(9,19,200); // upper right
 	
+	//drawTetromino(4,10, 3, 0); //L
+	//drawTetromino(6,11, 0, 0); //O
+	//drawTetromino(7,10, 4, 0); //J
+	//drawTetromino(5, 8, 2, 0); //T
+	//drawTetromino(7, 8, 5, 0); //S
+	//drawTetromino(3, 8, 6, 0); //Z
+	//drawTetromino(3, 11, 1, 0); //Z
 }
 function drawBlock(x, y, c){ 
+// Convert to game grid coordinates	
+/* x 0-9
+*  y 0-19
+*/
 	xPixel = x * 30;
 	yPixel = (19 - y) * 30;
 	
@@ -28,7 +47,7 @@ function drawBlock(x, y, c){
 //	ctx.fillStyle = "hsl(" + c + ",100%,50%)";
 
 /***Draw block borders***/
-	ctx.fillStyle = "#0066FF" // Solid border color
+	ctx.fillStyle = "hsl(" + c + ",100%,50%)" // Solid border color
 //	Draw left trapezoid
 
 	ctx.beginPath();
@@ -63,11 +82,105 @@ function drawBlock(x, y, c){
 	ctx.fill();
 	
 }
-functionDrawTetromino(x, y, t, o){
+function drawTetromino(x, y, t, o){
+
+/****
+** 0 - O
+** 1 - I
+** 2 - T
+** 3 - L
+** 4 - J
+** 5 - S
+** 6 - Z
+****/
+	switch(t){
 	
+	case 0: // O
+		var c = 360;
+		drawBlock(x-1, y, c); // 1
+		drawBlock(x, y, c); // 2
+		drawBlock(x, y - 1, c); // 3
+		drawBlock(x -1, y - 1, c); // 4
+		break;
+	case 1: // I
+		var c = 176;
+		drawBlock(x, y+1, c); // 1
+		drawBlock(x, y, c); // 2
+		drawBlock(x, y-1, c); // 3
+		drawBlock(x, y-2, c); // 4
+		break;
+	case 2: // T
+		var c = 286;
+		drawBlock(x-1, y, c); // 1
+		drawBlock(x, y, c); // 2
+		drawBlock(x+1, y, c); // 3
+		drawBlock(x , y - 1, c); // 4
+		break;
+	case 3: // L
+		var c = 29;
+		drawBlock(x, y + 1, c); // 1
+		drawBlock(x, y, c); // 2
+		drawBlock(x, y - 1, c); // 3
+		drawBlock(x + 1, y - 1, c); // 4
+		break;
+	case 4: // J
+		var c = 113;
+		drawBlock(x, y + 1, c); // 1
+		drawBlock(x, y, c); // 2
+		drawBlock(x, y - 1, c); // 3
+		drawBlock(x  - 1, y - 1, c); // 4
+		break;
+	case 5: // S
+		var c = 55;
+		drawBlock(x + 1, y, c); // 1
+		drawBlock(x, y, c); // 2
+		drawBlock(x, y - 1, c); // 3
+		drawBlock(x  - 1, y - 1, c); // 4
+		break;
+	case 6: // Z
+		var c = 247;
+		drawBlock(x-1, y, c); // 1
+		drawBlock(x, y, c); // 2
+		drawBlock(x, y-1, c); // 3
+		drawBlock(x+1, y-1, c); // 4
+		break;
+	
+	}
+
+}
+function keyDown(e){
+	//alert(e.keyCode);
+	// up 38
+	// down 40
+	// left 37
+	// right 39
+	
+	ctx.clearRect(0,0,300,600);
+	
+	switch(e.keyCode){
+	case 37: //left
+		x-=1;
+		break;
+	case 38: //up
+		o = (o + 1) % 4;
+		break;
+	case 39: //right
+		x+=1;
+		break;
+	case 40: //down
+		y-=1;
+		break;
+	default:
+		t = Math.floor((Math.random() * 7));
+		x = 4;
+		y = 18;
+		o = 0;
+	}
+	
+	drawTetromino(x,y,t,o);
 }
 </script>
-<body onload="initialize();" style="background-color:#444444">
+<body onload="initialize();" onkeydown="keyDown(event);" style="background-color:#444444">
 	<canvas id="gameGrid" height="600px" width="300px" style="background-color:#FFFFFF"></canvas>
 </body>
 </html>
